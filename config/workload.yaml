@@ -1,0 +1,54 @@
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  labels:
+    app.kubernetes.io/part-of: event-chat
+    apps.tanzu.vmware.com/has-tests: "true"
+    apps.tanzu.vmware.com/workload-type: web
+  name: event-chat
+  namespace: practices-sandbox
+spec:
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: '17'
+      - name: CI_JOB_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: tap-build-creds
+            key: GITLAB_PAT
+  env:
+    - name: RABBITMQ_STREAM_HOSTNAME
+      valueFrom:
+        secretKeyRef:
+          name: rmq-default-user
+          key: host
+    - name: RABBITMQ_STREAM_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: rmq-default-user
+          key: username
+    - name: RABBITMQ_STREAM_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: rmq-default-user
+          key: password
+
+  serviceClaims:
+    - name: ca-certs
+      ref:
+        apiVersion: v1
+        kind: Secret
+        name: ca-certs-secret
+  source:
+    git:
+      ref:
+        branch: main
+      url: https://github.com/gballer77/spring-rabbit-streams-chat
+  params:
+    - name: gitops_ssh_secret
+      value: git-credentials
+    - name: annotations
+      value:
+        autoscaling.knative.dev/minScale: "1"

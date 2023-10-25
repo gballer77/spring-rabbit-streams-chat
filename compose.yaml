@@ -1,0 +1,30 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker compose reference guide at
+# https://docs.docker.com/compose/compose-file/
+
+# Here the instructions define your application as a service called "app".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+services:
+#  app:
+#    build:
+#      context: .
+#      target: final
+#    ports:
+#      - 8080:8080
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_stream advertised_host localhost
+    ports:
+      - "5552:5552"
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./docker-rabbit-enabled_plugins:/etc/rabbitmq/enabled_plugins
