@@ -1,1 +1,5 @@
 rootProject.name = 'event-chat'
+include 'random-message-producer'
+include 'chat-app-backend'
+include 'chat-lib'
+include 'geographic-message-processor'

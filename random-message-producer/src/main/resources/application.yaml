@@ -1,0 +1,9 @@
+server:
+  port: 8090
+spring:
+  cloud:
+    stream:
+      bindings:
+        randomChat-out-0:
+          destination: chat-exchange
+          content-type: application/json

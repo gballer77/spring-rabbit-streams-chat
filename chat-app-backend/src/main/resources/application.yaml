@@ -1,0 +1,17 @@
+server:
+  port: 8080
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"
+spring:
+  rabbitmq:
+    stream:
+      host: ${RABBITMQ_STREAM_HOSTNAME:localhost}
+      port: ${RABBITMQ_STREAM_PORT:5552}
+      username: ${RABBITMQ_STREAM_USERNAME:guest}
+      password: ${RABBITMQ_STREAM_PASSWORD:guest}
+  application:
+    name: chat-app

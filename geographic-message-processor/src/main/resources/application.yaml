@@ -1,0 +1,19 @@
+server:
+  port: 8095
+spring:
+  cloud:
+    stream:
+      bindings:
+        processName-in-0:
+          destination: chat-exchange
+          group: ephemeral-chat-room
+          content-type: application/json
+        processName-out-0:
+          destination: geo-exchange
+          group: ephemeral-geo
+          content-type: application/json
+      rabbit:
+        bindings:
+          processName-in-0:
+            consumer:
+              queueNameGroupOnly: true

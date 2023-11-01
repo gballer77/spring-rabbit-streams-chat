@@ -14,7 +14,23 @@ services:
 #      target: final
 #    ports:
 #      - 8080:8080
-
+  websocket-stream-sink:
+    image: springcloudstream/websocket-sink-rabbit:latest
+    container_name: geo-stream-websocket-sink
+    environment:
+      - SERVER_PORT=8096
+      - SPRING_CLOUD_STREAM_BINDINGS_INPUT_DESTINATION=geo-exchange
+      - SPRING_CLOUD_STREAM_BINDINGS_INPUT_GROUP=ephemeral-geo
+      - SPRING_CLOUD_STREAM_BINDINGS_INPUT_CONTENT_TYPE=application/json
+      - SPRING_CLOUD_STREAM_BINDINGS_INPUT_CONTENT_BINDER=rabbit
+      - SPRING_CLOUD_STREAM_RABBIT_BINDINGS_INPUT_CONSUMER_QUEUE_NAME_GROUP_ONLY=true
+      - SPRING_CLOUD_STREAM_BINDERS_RABBIT_TYPE=rabbit
+      - SPRING_CLOUD_STREAM_BINDERS_RABBIT_ENVIRONMENT_SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_CLOUD_STREAM_BINDERS_RABBIT_ENVIRONMENT_SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_CLOUD_STREAM_BINDERS_RABBIT_ENVIRONMENT_SPRING_RABBITMQ_PASSWORD=guest
+    ports:
+      - "8096:8096"
+      - "9292:9292"
   rabbitmq:
     image: rabbitmq:3.12-management
     container_name: rabbitmq
